@@ -230,239 +230,46 @@
             background: #0b7dda;
         }
 
-
         @media (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
-            
-            .container {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 22px;
-            }
-            
-            .game-board {
-                gap: 15px;
-                min-height: 280px;
-            }
-            
-            .rod {
-                width: 120px;
-                min-width: 90px;
-            }
-            
-            .rod-pole {
-                height: 180px;
-            }
-            
-            .disc {
-                height: 24px;
-            }
-            
-            .stats-table {
-                font-size: 13px;
-            }
-            
-            .stats-table th,
-            .stats-table td {
-                padding: 6px 10px;
-            }
+            body { padding: 15px; }
+            .container { padding: 15px; }
+            h1 { font-size: 22px; }
+            .game-board { gap: 15px; min-height: 280px; }
+            .rod { width: 120px; min-width: 90px; }
+            .rod-pole { height: 180px; }
+            .disc { height: 24px; }
+            .stats-table { font-size: 13px; }
+            .stats-table th, .stats-table td { padding: 6px 10px; }
         }
-
 
         @media (max-width: 700px) {
-            .game-board {
-                flex-direction: column;
-                align-items: center;
-                gap: 30px;
-            }
-            
-            .rod {
-                width: 100%;
-                max-width: 300px;
-                margin: 0 auto;
-            }
-            
-            .rod-pole {
-                height: 150px;
-                width: 6px;
-            }
-            
-            .rod-base {
-                max-width: 200px;
-            }
-            
-            .disc {
-                height: 22px;
-            }
+            .game-board { flex-direction: column; align-items: center; gap: 30px; }
+            .rod { width: 100%; max-width: 300px; margin: 0 auto; }
+            .rod-pole { height: 150px; width: 6px; }
+            .rod-base { max-width: 200px; }
+            .disc { height: 22px; }
         }
-
 
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            
-            .container {
-                padding: 12px;
-            }
-            
-            h1 {
-                font-size: 18px;
-                margin-bottom: 15px;
-            }
-            
-            .game-controls {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 12px;
-            }
-            
-            .game-controls select,
-            .game-controls input,
-            .game-controls button {
-                width: 100%;
-                margin: 0;
-            }
-            
-            .game-stats {
-                flex-direction: column;
-                text-align: center;
-                gap: 8px;
-                padding: 10px;
-                font-size: 14px;
-            }
-            
-            .game-board {
-                min-height: auto;
-                padding: 15px 0;
-                gap: 25px;
-            }
-            
-            .rod {
-                width: 100%;
-                max-width: 250px;
-            }
-            
-            .rod-pole {
-                height: 130px;
-                width: 5px;
-            }
-            
-            .rod-base {
-                height: 10px;
-                max-width: 180px;
-            }
-            
-            .rod-label {
-                font-size: 14px;
-            }
-            
-            .discs-container {
-                bottom: 10px;
-            }
-            
-            .disc {
-                height: 20px;
-            }
-            
-            .message {
-                font-size: 14px;
-                padding: 10px;
-            }
-            
-            .statistics {
-                padding: 12px;
-                margin-top: 20px;
-            }
-            
-            .statistics h2 {
-                font-size: 16px;
-                margin-bottom: 10px;
-            }
-            
-            .stats-table {
-                font-size: 11px;
-            }
-            
-            .stats-table th,
-            .stats-table td {
-                padding: 5px 8px;
-            }
-            
-            #refreshStats {
-                width: 100%;
-                margin: 8px 0;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .rod-pole {
-                height: 110px;
-            }
-            
-            .rod-base {
-                max-width: 150px;
-            }
-            
-            .disc {
-                height: 18px;
-            }
-            
-            .stats-table {
-                font-size: 10px;
-            }
-            
-            .stats-table th,
-            .stats-table td {
-                padding: 4px 6px;
-            }
-        }
-
-        @media (max-width: 768px) and (orientation: landscape) {
-            .game-board {
-                flex-direction: row;
-                min-height: 200px;
-            }
-            
-            .rod-pole {
-                height: 120px;
-            }
-            
-            .disc {
-                height: 18px;
-            }
-        }
-
-        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-            .game-board {
-                gap: 20px;
-            }
-            
-            .rod {
-                width: 130px;
-            }
-        }
-
-        @media (min-width: 1200px) {
-            .container {
-                max-width: 1000px;
-            }
-            
-            .game-board {
-                min-height: 350px;
-            }
-            
-            .rod-pole {
-                height: 250px;
-            }
-            
-            .disc {
-                height: 32px;
-            }
+            body { padding: 10px; }
+            .container { padding: 12px; }
+            h1 { font-size: 18px; margin-bottom: 15px; }
+            .game-controls { flex-direction: column; align-items: stretch; padding: 12px; }
+            .game-controls select, .game-controls button { width: 100%; margin: 0; }
+            .game-stats { flex-direction: column; text-align: center; gap: 8px; padding: 10px; font-size: 14px; }
+            .game-board { min-height: auto; padding: 15px 0; gap: 25px; }
+            .rod { width: 100%; max-width: 250px; }
+            .rod-pole { height: 130px; width: 5px; }
+            .rod-base { height: 10px; max-width: 180px; }
+            .rod-label { font-size: 14px; }
+            .discs-container { bottom: 10px; }
+            .disc { height: 20px; }
+            .message { font-size: 14px; padding: 10px; }
+            .statistics { padding: 12px; margin-top: 20px; }
+            .statistics h2 { font-size: 16px; margin-bottom: 10px; }
+            .stats-table { font-size: 11px; }
+            .stats-table th, .stats-table td { padding: 5px 8px; }
+            #refreshStats { width: 100%; margin: 8px 0; }
         }
     </style>
 </head>
@@ -470,8 +277,6 @@
     <div class="container">
         <h1>Ханойские башни</h1>
         
-        <!-- Секция авторизации полностью удалена -->
-
         <div id="gameInterface">
             <div class="game-controls">
                 <div class="difficulty-selector">
@@ -554,6 +359,7 @@
                 this.selectedRod = null;
                 this.gameActive = true;
                 document.getElementById('message').textContent = '';
+                document.getElementById('message').className = 'message';
                 
                 this.resetTimer();
                 this.startTimer();
@@ -631,7 +437,6 @@
                     document.getElementById('message').textContent = `Поздравляем! Вы прошли игру за ${this.moves} ходов! Время: ${timeStr}`;
                     document.getElementById('message').className = 'message success';
 
-                    // Сохраняем результат локально
                     this.saveGameResult(timeStr, this.moves, this.numDisks);
                 }
             }
@@ -725,13 +530,13 @@
                     
                     const container = document.getElementById(`rod-${i}`);
                     
-                    // Важно: перебираем диски снизу вверх, чтобы они правильно накладывались
+                    // Правильный порядок: от нижнего диска (индекс 0) к верхнему
                     for (let j = 0; j < this.rods[i].length; j++) {
                         const diskSize = this.rods[i][j];
                         const disk = document.createElement('div');
                         disk.className = 'disc';
                         
-                        // Подсветка выбранного диска (только верхний)
+                        // Подсветка только верхнего диска
                         if (this.selectedRod === i && j === this.rods[i].length - 1) {
                             disk.classList.add('selected');
                         }
