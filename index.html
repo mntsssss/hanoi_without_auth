@@ -5,278 +5,471 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ханойские башни</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: #f0f0f0;
-        }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #f0f0f0;
+}
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
 
-        h1 {
-            text-align: center;
-            margin: 0 0 20px 0;
-            font-size: 24px;
-        }
+h1 {
+    text-align: center;
+    margin: 0 0 20px 0;
+    font-size: 24px;
+}
 
-        .game-controls {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-        }
+.game-controls {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
 
-        .game-controls select,
-        .game-controls input,
-        .game-controls button {
-            padding: 8px 12px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+.game-controls select,
+.game-controls input,
+.game-controls button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-        .game-controls button {
-            background: #4CAF50;
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+.game-controls button {
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
 
-        .game-controls button:hover {
-            background: #45a049;
-        }
+.game-controls button:hover {
+    background: #45a049;
+}
 
-        .game-stats {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            padding: 12px;
-            background: #e0e0e0;
-            font-weight: bold;
-            border-radius: 5px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+.game-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding: 12px;
+    background: #e0e0e0;
+    font-weight: bold;
+    border-radius: 5px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
-        .game-board {
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
-            margin: 30px 0;
-            padding: 20px 0;
-            background: #d0d0d0;
-            min-height: 300px;
-            border-radius: 5px;
-            position: relative;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+.game-board {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    margin: 30px 0;
+    padding: 20px 0;
+    background: #d0d0d0;
+    min-height: 300px;
+    border-radius: 5px;
+    position: relative;
+    gap: 20px;
+    flex-wrap: wrap;
+}
 
-        .rod {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 140px;
-            cursor: pointer;
-            position: relative;
-            flex-shrink: 1;
-            min-width: 100px;
-        }
+.rod {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 140px;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 1;
+    min-width: 100px;
+}
 
-        .rod-pole {
-            width: 8px;
-            height: 200px;
-            background: #2c3e50;
-            margin-bottom: 5px;
-            border-radius: 4px;
-        }
+.rod-pole {
+    width: 8px;
+    height: 200px;
+    background: #2c3e50;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
 
-        .rod-base {
-            width: 100%;
-            max-width: 120px;
-            height: 12px;
-            background: #2c3e50;
-            border-radius: 4px;
-        }
+.rod-base {
+    width: 100%;
+    max-width: 120px;
+    height: 12px;
+    background: #2c3e50;
+    border-radius: 4px;
+}
 
-        .rod-label {
-            margin-top: 10px;
-            font-weight: bold;
-            font-size: 16px;
-        }
+.rod-label {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
 
-        .discs-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            position: absolute;
-            bottom: 12px;
-            width: 100%;
-            pointer-events: none;
-        }
+.discs-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 12px;
+    width: 100%;
+    pointer-events: none;
+}
 
-        .disc {
-            height: 28px;
-            background: linear-gradient(135deg, #6e0157, #4a003a);
-            border: 1px solid #460031;
-            margin: 1px 0;
-            cursor: pointer;
-            pointer-events: auto;
-            border-radius: 4px;
-            transition: all 0.2s;
-            min-width: 20px;
-        }
+.disc {
+    height: 28px;
+    background: linear-gradient(135deg, #6e0157, #4a003a);
+    border: 1px solid #460031;
+    margin: 1px 0;
+    cursor: pointer;
+    pointer-events: auto;
+    border-radius: 4px;
+    transition: all 0.2s;
+    min-width: 20px;
+}
 
-        .disc:hover {
-            transform: scaleX(1.05);
-        }
+.disc:hover {
+    transform: scaleX(1.05);
+}
 
-        .disc.selected {
-            border: 3px solid #ff00d4;
-            background: linear-gradient(135deg, #8f006b, #6e0157);
-            box-shadow: 0 0 8px rgba(255,0,212,0.5);
-        }
+.disc.selected {
+    border: 3px solid #ff00d4;
+    background: linear-gradient(135deg, #8f006b, #6e0157);
+    box-shadow: 0 0 8px rgba(255,0,212,0.5);
+}
 
-        .message {
-            text-align: center;
-            padding: 12px;
-            margin: 10px 0;
-            background: #e0e0e0;
-            font-weight: bold;
-            border-radius: 5px;
-        }
+.message {
+    text-align: center;
+    padding: 12px;
+    margin: 10px 0;
+    background: #e0e0e0;
+    font-weight: bold;
+    border-radius: 5px;
+}
 
-        .message.success {
-            background: #ccffcc;
-            color: #006600;
-        }
+.message.success {
+    background: #ccffcc;
+    color: #006600;
+}
 
-        .message.error {
-            background: #ffcccc;
-            color: #cc0000;
-        }
+.message.error {
+    background: #ffcccc;
+    color: #cc0000;
+}
 
-        .statistics {
-            margin-top: 30px;
-            padding: 15px;
-            background: #e0e0e0;
-            border-radius: 5px;
-        }
+.statistics {
+    margin-top: 30px;
+    padding: 15px;
+    background: #e0e0e0;
+    border-radius: 5px;
+}
 
-        .statistics h2 {
-            margin: 0 0 15px 0;
-            font-size: 18px;
-        }
+.statistics h2 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+}
 
-        .stats-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            font-size: 14px;
-            border-radius: 5px;
-            overflow: hidden;
-        }
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 14px;
+    border-radius: 5px;
+    overflow: hidden;
+}
 
-        .stats-table th,
-        .stats-table td {
-            border: 1px solid #ddd;
-            padding: 8px 12px;
-            text-align: left;
-        }
+.stats-table th,
+.stats-table td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+}
 
-        .stats-table th {
-            background: #4CAF50;
-            color: white;
-            font-weight: bold;
-        }
+.stats-table th {
+    background: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
 
-        .stats-table tr:nth-child(even) {
-            background: #f9f9f9;
-        }
+.stats-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
 
-        .stats-table tr:hover {
-            background: #f5f5f5;
-        }
+.stats-table tr:hover {
+    background: #f5f5f5;
+}
 
-        #refreshStats {
-            margin: 10px 0;
-            padding: 8px 16px;
-            background: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+#refreshStats {
+    margin: 10px 0;
+    padding: 8px 16px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
 
-        #refreshStats:hover {
-            background: #0b7dda;
-        }
+#refreshStats:hover {
+    background: #0b7dda;
+}
 
-        @media (max-width: 768px) {
-            body { padding: 15px; }
-            .container { padding: 15px; }
-            h1 { font-size: 22px; }
-            .game-board { gap: 15px; min-height: 280px; }
-            .rod { width: 120px; min-width: 90px; }
-            .rod-pole { height: 180px; }
-            .disc { height: 24px; }
-            .stats-table { font-size: 13px; }
-            .stats-table th, .stats-table td { padding: 6px 10px; }
-        }
 
-        @media (max-width: 700px) {
-            .game-board { flex-direction: column; align-items: center; gap: 30px; }
-            .rod { width: 100%; max-width: 300px; margin: 0 auto; }
-            .rod-pole { height: 150px; width: 6px; }
-            .rod-base { max-width: 200px; }
-            .disc { height: 22px; }
-        }
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 22px;
+    }
+    
+    .game-board {
+        gap: 15px;
+        min-height: 280px;
+    }
+    
+    .rod {
+        width: 120px;
+        min-width: 90px;
+    }
+    
+    .rod-pole {
+        height: 180px;
+    }
+    
+    .disc {
+        height: 24px;
+    }
+    
+    .stats-table {
+        font-size: 13px;
+    }
+    
+    .stats-table th,
+    .stats-table td {
+        padding: 6px 10px;
+    }
+}
 
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .container { padding: 12px; }
-            h1 { font-size: 18px; margin-bottom: 15px; }
-            .game-controls { flex-direction: column; align-items: stretch; padding: 12px; }
-            .game-controls select, .game-controls button { width: 100%; margin: 0; }
-            .game-stats { flex-direction: column; text-align: center; gap: 8px; padding: 10px; font-size: 14px; }
-            .game-board { min-height: auto; padding: 15px 0; gap: 25px; }
-            .rod { width: 100%; max-width: 250px; }
-            .rod-pole { height: 130px; width: 5px; }
-            .rod-base { height: 10px; max-width: 180px; }
-            .rod-label { font-size: 14px; }
-            .discs-container { bottom: 10px; }
-            .disc { height: 20px; }
-            .message { font-size: 14px; padding: 10px; }
-            .statistics { padding: 12px; margin-top: 20px; }
-            .statistics h2 { font-size: 16px; margin-bottom: 10px; }
-            .stats-table { font-size: 11px; }
-            .stats-table th, .stats-table td { padding: 5px 8px; }
-            #refreshStats { width: 100%; margin: 8px 0; }
-        }
+
+@media (max-width: 700px) {
+    .game-board {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+    
+    .rod {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .rod-pole {
+        height: 150px;
+        width: 6px;
+    }
+    
+    .rod-base {
+        max-width: 200px;
+    }
+    
+    .disc {
+        height: 22px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 12px;
+    }
+    
+    h1 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    
+    .game-controls {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+    }
+    
+    .game-controls select,
+    .game-controls input,
+    .game-controls button {
+        width: 100%;
+        margin: 0;
+    }
+    
+    .game-stats {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .game-board {
+        min-height: auto;
+        padding: 15px 0;
+        gap: 25px;
+    }
+    
+    .rod {
+        width: 100%;
+        max-width: 250px;
+    }
+    
+    .rod-pole {
+        height: 130px;
+        width: 5px;
+    }
+    
+    .rod-base {
+        height: 10px;
+        max-width: 180px;
+    }
+    
+    .rod-label {
+        font-size: 14px;
+    }
+    
+    .discs-container {
+        bottom: 10px;
+    }
+    
+    .disc {
+        height: 20px;
+    }
+    
+    .message {
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    .statistics {
+        padding: 12px;
+        margin-top: 20px;
+    }
+    
+    .statistics h2 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    
+    .stats-table {
+        font-size: 11px;
+    }
+    
+    .stats-table th,
+    .stats-table td {
+        padding: 5px 8px;
+    }
+    
+    #refreshStats {
+        width: 100%;
+        margin: 8px 0;
+    }
+}
+
+@media (max-width: 360px) {
+    .rod-pole {
+        height: 110px;
+    }
+    
+    .rod-base {
+        max-width: 150px;
+    }
+    
+    .disc {
+        height: 18px;
+    }
+    
+    .stats-table {
+        font-size: 10px;
+    }
+    
+    .stats-table th,
+    .stats-table td {
+        padding: 4px 6px;
+    }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+    .game-board {
+        flex-direction: row;
+        min-height: 200px;
+    }
+    
+    .rod-pole {
+        height: 120px;
+    }
+    
+    .disc {
+        height: 18px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .game-board {
+        gap: 20px;
+    }
+    
+    .rod {
+        width: 130px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1000px;
+    }
+    
+    .game-board {
+        min-height: 350px;
+    }
+    
+    .rod-pole {
+        height: 250px;
+    }
+    
+    .disc {
+        height: 32px;
+    }
+}
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Ханойские башни</h1>
-        
+
         <div id="gameInterface">
             <div class="game-controls">
                 <div class="difficulty-selector">
@@ -312,246 +505,347 @@
     </div>
 
     <script>
-        class HanoiTowers {
-            constructor() {
-                this.rods = [[], [], []];
-                this.numDisks = 5;
-                this.moves = 0;
-                this.startTime = null;
-                this.timerInterval = null;
-                this.selectedRod = null;
-                this.gameActive = false;
-                
-                this.init();
+        // Game state
+        let rods = [[], [], []];
+        let selectedRod = null;
+        let moves = 0;
+        let timer = null;
+        let seconds = 0;
+        let gameActive = true;
+        let currentDifficulty = 5; // default 5 disks
+        
+        // Stats storage
+        let gameStats = [];
+        
+        // Initialize game
+        function initGame(diskCount = currentDifficulty) {
+            // Reset rods
+            rods = [[], [], []];
+            
+            // Add disks to first rod (largest first, so smallest on top)
+            for (let i = diskCount; i > 0; i--) {
+                rods[0].push(i);
             }
-
-            init() {
-                this.bindEvents();
-                this.updateMinMoves();
-                this.newGame();
-                this.loadStatistics();
+            
+            selectedRod = null;
+            moves = 0;
+            updateMovesDisplay();
+            
+            // Reset timer
+            if (timer) {
+                clearInterval(timer);
             }
-
-            bindEvents() {
-                document.getElementById('newGameBtn').addEventListener('click', () => this.newGame());
-                document.getElementById('difficulty').addEventListener('change', (e) => {
-                    this.numDisks = parseInt(e.target.value);
-                    this.updateMinMoves();
-                    this.newGame();
-                });
-                document.getElementById('refreshStats').addEventListener('click', () => this.loadStatistics());
+            seconds = 0;
+            updateTimeDisplay();
+            timer = setInterval(updateTimer, 1000);
+            
+            gameActive = true;
+            
+            // Update minimum moves display
+            const minMoves = Math.pow(2, diskCount) - 1;
+            document.getElementById('minMoves').textContent = minMoves;
+            
+            // Clear message
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = '';
+            messageDiv.className = 'message';
+            
+            // Render game board
+            renderBoard();
+        }
+        
+        // Update timer
+        function updateTimer() {
+            if (gameActive) {
+                seconds++;
+                updateTimeDisplay();
             }
-
-            updateMinMoves() {
-                const minMoves = Math.pow(2, this.numDisks) - 1;
-                document.getElementById('minMoves').textContent = minMoves;
-            }
-
-            newGame() {
-                this.rods = [[], [], []];
-                for (let i = this.numDisks; i >= 1; i--) {
-                    this.rods[0].push(i);
+        }
+        
+        // Update time display
+        function updateTimeDisplay() {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            document.getElementById('timeDisplay').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Update moves display
+        function updateMovesDisplay() {
+            document.getElementById('movesCount').textContent = moves;
+        }
+        
+        // Check win condition
+        function checkWin() {
+            // Win if all disks are on the last rod (index 2)
+            if (rods[2].length === currentDifficulty) {
+                gameActive = false;
+                if (timer) {
+                    clearInterval(timer);
                 }
                 
-                this.moves = 0;
-                document.getElementById('movesCount').textContent = this.moves;
+                const minMoves = Math.pow(2, currentDifficulty) - 1;
+                const isPerfect = (moves === minMoves);
                 
-                this.selectedRod = null;
-                this.gameActive = true;
-                document.getElementById('message').textContent = '';
-                document.getElementById('message').className = 'message';
+                const messageDiv = document.getElementById('message');
+                messageDiv.textContent = `Поздравляем! Вы победили за ${moves} ходов за ${formatTime(seconds)}! ${isPerfect ? 'Идеально! 🎉' : ''}`;
+                messageDiv.className = 'message success';
                 
-                this.resetTimer();
-                this.startTimer();
-                this.render();
-            }
-
-            startTimer() {
-                this.startTime = Date.now();
-                this.timerInterval = setInterval(() => {
-                    if (!this.gameActive) return;
-                    const elapsedTime = Date.now() - this.startTime;
-                    const totalSeconds = Math.floor(elapsedTime / 1000);
-                    const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-                    const seconds = (totalSeconds % 60).toString().padStart(2, '0');
-                    document.getElementById('timeDisplay').textContent = `${minutes}:${seconds}`;
-                }, 1000);
-            }
-
-            resetTimer() {
-                if (this.timerInterval) {
-                    clearInterval(this.timerInterval);
-                }
-                document.getElementById('timeDisplay').textContent = '00:00';
-            }
-
-            handleRodClick(rodIndex) {
-                if (!this.gameActive) return;
-
-                if (this.selectedRod === null) {
-                    if (this.rods[rodIndex].length > 0) {
-                        this.selectedRod = rodIndex;
-                    }
-                } else {
-                    if (this.selectedRod === rodIndex) {
-                        this.selectedRod = null;
-                    } else {
-                        this.moveDisk(this.selectedRod, rodIndex);
-                        this.selectedRod = null;
-                    }
-                }
-                this.render();
-            }
-
-            moveDisk(fromRod, toRod) {
-                const fromDisks = this.rods[fromRod];
-                const toDisks = this.rods[toRod];
-
-                if (fromDisks.length === 0) return;
-
-                const diskToMove = fromDisks[fromDisks.length - 1];
-                const topDiskOnToRod = toDisks[toDisks.length - 1];
-
-                if (topDiskOnToRod !== undefined && diskToMove > topDiskOnToRod) {
-                    document.getElementById('message').textContent = 'Нельзя класть больший диск на меньший!';
-                    document.getElementById('message').className = 'message error';
-                    return;
-                }
+                // Save game result
+                saveGameResult(moves, seconds, currentDifficulty, isPerfect);
                 
-                fromDisks.pop();
-                toDisks.push(diskToMove);
-                
-                this.moves++;
-                document.getElementById('movesCount').textContent = this.moves;
-                document.getElementById('message').textContent = '';
-
-                this.checkWin();
+                return true;
             }
-
-            checkWin() {
-                if (this.rods[1].length === this.numDisks || this.rods[2].length === this.numDisks) {
-                    this.gameActive = false;
-                    clearInterval(this.timerInterval);
-                    
-                    const timeStr = document.getElementById('timeDisplay').textContent;
-                    document.getElementById('message').textContent = `Поздравляем! Вы прошли игру за ${this.moves} ходов! Время: ${timeStr}`;
-                    document.getElementById('message').className = 'message success';
-
-                    this.saveGameResult(timeStr, this.moves, this.numDisks);
-                }
+            return false;
+        }
+        
+        // Format time for display
+        function formatTime(totalSeconds) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const secs = totalSeconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Save game result to localStorage
+        function saveGameResult(moves, timeSeconds, difficulty, isPerfect) {
+            const result = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                moves: moves,
+                time: timeSeconds,
+                timeFormatted: formatTime(timeSeconds),
+                difficulty: difficulty,
+                minMoves: Math.pow(2, difficulty) - 1,
+                isPerfect: isPerfect
+            };
+            
+            gameStats.unshift(result); // Add to beginning
+            
+            // Keep only last 20 results
+            if (gameStats.length > 20) {
+                gameStats = gameStats.slice(0, 20);
             }
-
-            saveGameResult(completionTime, movesCount, difficulty) {
-                const gameResult = {
-                    id: Date.now(),
-                    player_name: 'Игрок',
-                    difficulty: difficulty,
-                    moves_count: movesCount,
-                    completion_time: completionTime,
-                    game_date: new Date().toISOString()
-                };
-
-                let results = this.getStoredResults();
-                results.unshift(gameResult);
-                
-                if (results.length > 20) {
-                    results = results.slice(0, 20);
+            
+            // Save to localStorage
+            localStorage.setItem('hanoiStats', JSON.stringify(gameStats));
+            
+            // Update stats display
+            displayStats();
+        }
+        
+        // Load stats from localStorage
+        function loadStats() {
+            const saved = localStorage.getItem('hanoiStats');
+            if (saved) {
+                try {
+                    gameStats = JSON.parse(saved);
+                } catch(e) {
+                    gameStats = [];
                 }
-                
-                localStorage.setItem('hanoi_stats', JSON.stringify(results));
-                this.loadStatistics();
+            } else {
+                // Add some example stats for demonstration
+                gameStats = [];
             }
-
-            getStoredResults() {
-                const stored = localStorage.getItem('hanoi_stats');
-                if (stored) {
-                    return JSON.parse(stored);
-                }
-                return [];
+            displayStats();
+        }
+        
+        // Display statistics
+        function displayStats() {
+            const container = document.getElementById('statsContainer');
+            
+            if (gameStats.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 20px;">Нет сохраненных игр. Сыграйте партию!</p>';
+                return;
             }
-
-            loadStatistics() {
-                const games = this.getStoredResults();
-                const container = document.getElementById('statsContainer');
+            
+            let tableHtml = `
+                <table class="stats-table">
+                    <thead>
+                        <tr><th>Дата</th><th>Дисков</th><th>Ходов</th><th>Время</th><th>Минимум</th><th>Результат</th></tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            for (let stat of gameStats) {
+                const date = new Date(stat.date).toLocaleDateString();
+                const isPerfectText = stat.isPerfect ? '🏆 Идеально' : '';
+                const isPerfectClass = stat.isPerfect ? 'style="color: #4CAF50; font-weight: bold;"' : '';
                 
-                if (games.length === 0) {
-                    container.innerHTML = '<p>Результатов пока нет.</p>';
-                    return;
-                }
-
-                let html = `
-                    <table class="stats-table">
-                        <thead>
-                            <tr>
-                                <th>Игрок</th>
-                                <th>Дисков</th>
-                                <th>Ходов</th>
-                                <th>Время</th>
-                                <th>Дата</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                tableHtml += `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${stat.difficulty}</td>
+                        <td>${stat.moves}</td>
+                        <td>${stat.timeFormatted}</td>
+                        <td>${stat.minMoves}</td>
+                        <td ${isPerfectClass}>${isPerfectText}</td>
+                    </tr>
                 `;
-
-                games.forEach(game => {
-                    const gameDate = new Date(game.game_date).toLocaleString('ru-RU');
-                    html += `
-                        <tr>
-                            <td>${game.player_name}</td>
-                            <td>${game.difficulty}</td>
-                            <td>${game.moves_count}</td>
-                            <td>${game.completion_time}</td>
-                            <td>${gameDate}</td>
-                        </tr>
-                    `;
-                });
-
-                html += '</tbody></table>';
-                container.innerHTML = html;
             }
-
-            render() {
-                const gameBoard = document.getElementById('gameBoard');
-                gameBoard.innerHTML = '';
-                const rodLabels = ['A', 'B', 'C'];
-                
-                for (let i = 0; i < 3; i++) {
-                    const rod = document.createElement('div');
-                    rod.className = 'rod';
-                    rod.innerHTML = `
-                        <div class="rod-pole"></div>
-                        <div class="rod-base"></div>
-                        <div class="discs-container" id="rod-${i}"></div>
-                        <div class="rod-label">Стержень ${rodLabels[i]}</div>
-                    `;
-                    
-                    rod.addEventListener('click', () => this.handleRodClick(i));
-                    gameBoard.appendChild(rod);
-                    
-                    const container = document.getElementById(`rod-${i}`);
-                    
-                    // Правильный порядок: от нижнего диска (индекс 0) к верхнему
-                    for (let j = 0; j < this.rods[i].length; j++) {
-                        const diskSize = this.rods[i][j];
-                        const disk = document.createElement('div');
-                        disk.className = 'disc';
-                        
-                        // Подсветка только верхнего диска
-                        if (this.selectedRod === i && j === this.rods[i].length - 1) {
-                            disk.classList.add('selected');
-                        }
-                        
-                        const width = 50 + diskSize * 20;
-                        disk.style.width = width + 'px';
-                        container.appendChild(disk);
+            
+            tableHtml += '</tbody></table>';
+            container.innerHTML = tableHtml;
+        }
+        
+        // Check if move is valid
+        function isValidMove(from, to) {
+            if (rods[from].length === 0) return false;
+            if (rods[to].length === 0) return true;
+            return rods[from][rods[from].length - 1] < rods[to][rods[to].length - 1];
+        }
+        
+        // Make move
+        function makeMove(from, to) {
+            if (!gameActive) return false;
+            if (!isValidMove(from, to)) return false;
+            
+            // Move disk
+            const disk = rods[from].pop();
+            rods[to].push(disk);
+            moves++;
+            updateMovesDisplay();
+            
+            // Clear selection
+            if (selectedRod !== null) {
+                document.querySelectorAll('.rod').forEach(rod => {
+                    rod.classList.remove('selected-rod');
+                });
+                selectedRod = null;
+            }
+            
+            renderBoard();
+            checkWin();
+            return true;
+        }
+        
+        // Handle rod click
+        function onRodClick(rodIndex) {
+            if (!gameActive) return;
+            
+            if (selectedRod === null) {
+                // Select rod if it has disks
+                if (rods[rodIndex].length > 0) {
+                    selectedRod = rodIndex;
+                    renderBoard();
+                }
+            } else {
+                // Try to move from selected rod to this rod
+                if (selectedRod === rodIndex) {
+                    // Deselect
+                    selectedRod = null;
+                    renderBoard();
+                } else {
+                    // Make move
+                    const success = makeMove(selectedRod, rodIndex);
+                    if (!success) {
+                        const messageDiv = document.getElementById('message');
+                        messageDiv.textContent = 'Неверный ход! Нельзя положить больший диск на меньший.';
+                        messageDiv.className = 'message error';
+                        setTimeout(() => {
+                            if (document.getElementById('message').className === 'message error') {
+                                document.getElementById('message').textContent = '';
+                                document.getElementById('message').className = 'message';
+                            }
+                        }, 1500);
                     }
+                    selectedRod = null;
+                    renderBoard();
                 }
             }
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            new HanoiTowers();
+        
+        // Render game board
+        function renderBoard() {
+            const board = document.getElementById('gameBoard');
+            board.innerHTML = '';
+            
+            const rodNames = ['A', 'B', 'C'];
+            
+            for (let i = 0; i < 3; i++) {
+                const rod = document.createElement('div');
+                rod.className = 'rod';
+                if (selectedRod === i) {
+                    rod.style.boxShadow = '0 0 0 3px #ff00d4';
+                    rod.style.borderRadius = '8px';
+                }
+                rod.onclick = () => onRodClick(i);
+                
+                const pole = document.createElement('div');
+                pole.className = 'rod-pole';
+                
+                const discsContainer = document.createElement('div');
+                discsContainer.className = 'discs-container';
+                
+                // Add disks from bottom to top (largest to smallest visually)
+                const disks = [...rods[i]];
+                for (let j = 0; j < disks.length; j++) {
+                    const disk = document.createElement('div');
+                    const diskSize = disks[j];
+                    // Width based on disk size relative to max disks (7)
+                    const maxWidth = 100;
+                    const minWidth = 20;
+                    const width = minWidth + (diskSize - 1) * ((maxWidth - minWidth) / (currentDifficulty - 1));
+                    disk.style.width = `${width}%`;
+                    disk.style.maxWidth = `${maxWidth}px`;
+                    disk.style.minWidth = `${minWidth}px`;
+                    disk.className = 'disc';
+                    disk.setAttribute('data-size', diskSize);
+                    discsContainer.appendChild(disk);
+                }
+                
+                const base = document.createElement('div');
+                base.className = 'rod-base';
+                
+                const label = document.createElement('div');
+                label.className = 'rod-label';
+                label.textContent = rodNames[i];
+                
+                rod.appendChild(pole);
+                rod.appendChild(discsContainer);
+                rod.appendChild(base);
+                rod.appendChild(label);
+                
+                board.appendChild(rod);
+            }
+        }
+        
+        // New game
+        function newGame() {
+            const difficultySelect = document.getElementById('difficulty');
+            currentDifficulty = parseInt(difficultySelect.value);
+            initGame(currentDifficulty);
+        }
+        
+        // Refresh stats
+        function refreshStats() {
+            loadStats();
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = 'Статистика обновлена';
+            messageDiv.className = 'message success';
+            setTimeout(() => {
+                if (document.getElementById('message').className === 'message success') {
+                    document.getElementById('message').textContent = '';
+                    document.getElementById('message').className = 'message';
+                }
+            }, 1500);
+        }
+        
+        // Event listeners
+        document.getElementById('newGameBtn').addEventListener('click', () => {
+            newGame();
         });
+        
+        document.getElementById('refreshStats').addEventListener('click', () => {
+            refreshStats();
+        });
+        
+        document.getElementById('difficulty').addEventListener('change', () => {
+            newGame();
+        });
+        
+        // Initialize game
+        loadStats();
+        initGame(5);
     </script>
 </body>
 </html>
