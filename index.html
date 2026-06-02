@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ханойские башни</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 20px 0;
+            font-size: 24px;
+        }
+
+        .game-controls {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .game-controls select,
+        .game-controls input,
+        .game-controls button {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .game-controls button {
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .game-controls button:hover {
+            background: #45a049;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 12px;
+            background: #e0e0e0;
+            font-weight: bold;
+            border-radius: 5px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .game-board {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            margin: 30px 0;
+            padding: 20px 0;
+            background: #d0d0d0;
+            min-height: 300px;
+            border-radius: 5px;
+            position: relative;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .rod {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 140px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 1;
+            min-width: 100px;
+        }
+
+        .rod-pole {
+            width: 8px;
+            height: 200px;
+            background: #2c3e50;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+
+        .rod-base {
+            width: 100%;
+            max-width: 120px;
+            height: 12px;
+            background: #2c3e50;
+            border-radius: 4px;
+        }
+
+        .rod-label {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .discs-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            position: absolute;
+            bottom: 12px;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .disc {
+            height: 28px;
+            background: linear-gradient(135deg, #6e0157, #4a003a);
+            border: 1px solid #460031;
+            margin: 1px 0;
+            cursor: pointer;
+            pointer-events: auto;
+            border-radius: 4px;
+            transition: all 0.2s;
+            min-width: 20px;
+        }
+
+        .disc:hover {
+            transform: scaleX(1.05);
+        }
+
+        .disc.selected {
+            border: 3px solid #ff00d4;
+            background: linear-gradient(135deg, #8f006b, #6e0157);
+            box-shadow: 0 0 8px rgba(255,0,212,0.5);
+        }
+
+        .message {
+            text-align: center;
+            padding: 12px;
+            margin: 10px 0;
+            background: #e0e0e0;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .message.success {
+            background: #ccffcc;
+            color: #006600;
+        }
+
+        .message.error {
+            background: #ffcccc;
+            color: #cc0000;
+        }
+
+        .statistics {
+            margin-top: 30px;
+            padding: 15px;
+            background: #e0e0e0;
+            border-radius: 5px;
+        }
+
+        .statistics h2 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 14px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .stats-table th,
+        .stats-table td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .stats-table th {
+            background: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        .stats-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .stats-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        #refreshStats {
+            margin: 10px 0;
+            padding: 8px 16px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #refreshStats:hover {
+            background: #0b7dda;
+        }
+
+        .clear-stats {
+            margin: 10px 0;
+            padding: 8px 16px;
+            background: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-left: 10px;
+        }
+
+        .clear-stats:hover {
+            background: #e68900;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .game-board {
+                gap: 15px;
+                min-height: 280px;
+            }
+            
+            .rod {
+                width: 120px;
+                min-width: 90px;
+            }
+            
+            .rod-pole {
+                height: 180px;
+            }
+            
+            .disc {
+                height: 24px;
+            }
+            
+            .stats-table {
+                font-size: 13px;
+            }
+            
+            .stats-table th,
+            .stats-table td {
+                padding: 6px 10px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .game-board {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+            
+            .rod {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+            
+            .rod-pole {
+                height: 150px;
+                width: 6px;
+            }
+            
+            .rod-base {
+                max-width: 200px;
+            }
+            
+            .disc {
+                height: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 12px;
+            }
+            
+            h1 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            
+            .game-controls {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 12px;
+            }
+            
+            .game-controls select,
+            .game-controls input,
+            .game-controls button {
+                width: 100%;
+                margin: 0;
+            }
+            
+            .game-stats {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .game-board {
+                min-height: auto;
+                padding: 15px 0;
+                gap: 25px;
+            }
+            
+            .rod {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .rod-pole {
+                height: 130px;
+                width: 5px;
+            }
+            
+            .rod-base {
+                height: 10px;
+                max-width: 180px;
+            }
+            
+            .rod-label {
+                font-size: 14px;
+            }
+            
+            .discs-container {
+                bottom: 10px;
+            }
+            
+            .disc {
+                height: 20px;
+            }
+            
+            .message {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .statistics {
+                padding: 12px;
+                margin-top: 20px;
+            }
+            
+            .statistics h2 {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            
+            .stats-table {
+                font-size: 11px;
+            }
+            
+            .stats-table th,
+            .stats-table td {
+                padding: 5px 8px;
+            }
+            
+            #refreshStats,
+            .clear-stats {
+                width: 100%;
+                margin: 8px 0;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .rod-pole {
+                height: 110px;
+            }
+            
+            .rod-base {
+                max-width: 150px;
+            }
+            
+            .disc {
+                height: 18px;
+            }
+            
+            .stats-table {
+                font-size: 10px;
+            }
+            
+            .stats-table th,
+            .stats-table td {
+                padding: 4px 6px;
+            }
+        }
+
+        @media (max-width: 768px) and (orientation: landscape) {
+            .game-board {
+                flex-direction: row;
+                min-height: 200px;
+            }
+            
+            .rod-pole {
+                height: 120px;
+            }
+            
+            .disc {
+                height: 18px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+            .game-board {
+                gap: 20px;
+            }
+            
+            .rod {
+                width: 130px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1000px;
+            }
+            
+            .game-board {
+                min-height: 350px;
+            }
+            
+            .rod-pole {
+                height: 250px;
+            }
+            
+            .disc {
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ханойские башни</h1>
+        
+        <div id="gameInterface">
+            <div class="game-controls">
+                <div class="difficulty-selector">
+                    <label for="difficulty">Количество дисков:</label>
+                    <select id="difficulty">
+                        <option value="3">3 (Легко)</option>
+                        <option value="4">4</option>
+                        <option value="5" selected>5 (Средне)</option>
+                        <option value="6">6</option>
+                        <option value="7">7 (Сложно)</option>
+                    </select>
+                </div>
+                
+                <button id="newGameBtn">Новая игра</button>
+            </div>
+
+            <div class="game-stats">
+                <div>Ходов: <span id="movesCount">0</span></div>
+                <div>Время: <span id="timeDisplay">00:00</span></div>
+                <div>Минимум ходов: <span id="minMoves">31</span></div>
+            </div>
+
+            <div class="game-board" id="gameBoard"></div>
+
+            <div class="message" id="message"></div>
+
+            <div class="statistics">
+                <h2>Статистика игр (Последние результаты)</h2>
+                <button id="refreshStats">Обновить статистику</button>
+                <button id="clearStatsBtn" class="clear-stats">Очистить статистику</button>
+                <div id="statsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class HanoiTowers {
+            constructor() {
+                this.rods = [[], [], []];
+                this.numDisks = 5;
+                this.moves = 0;
+                this.startTime = null;
+                this.timerInterval = null;
+                this.selectedRod = null;
+                this.gameActive = false;
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.updateMinMoves();
+                this.newGame();
+                this.loadStatistics();
+            }
+
+            bindEvents() {
+                document.getElementById('newGameBtn').addEventListener('click', () => this.newGame());
+                document.getElementById('difficulty').addEventListener('change', (e) => {
+                    this.numDisks = parseInt(e.target.value);
+                    this.updateMinMoves();
+                    this.newGame();
+                });
+                document.getElementById('refreshStats').addEventListener('click', () => this.loadStatistics());
+                document.getElementById('clearStatsBtn').addEventListener('click', () => this.clearStatistics());
+            }
+
+            updateMinMoves() {
+                const minMoves = Math.pow(2, this.numDisks) - 1;
+                document.getElementById('minMoves').textContent = minMoves;
+            }
+
+            newGame() {
+                this.rods = [[], [], []];
+                for (let i = this.numDisks; i >= 1; i--) {
+                    this.rods[0].push(i);
+                }
+                
+                this.moves = 0;
+                document.getElementById('movesCount').textContent = this.moves;
+                
+                this.selectedRod = null;
+                this.gameActive = true;
+                document.getElementById('message').textContent = '';
+                document.getElementById('message').className = 'message';
+                
+                this.resetTimer();
+                this.startTimer();
+                this.render();
+            }
+
+            startTimer() {
+                this.startTime = Date.now();
+                this.timerInterval = setInterval(() => {
+                    if (!this.gameActive) return;
+                    const elapsedTime = Date.now() - this.startTime;
+                    const totalSeconds = Math.floor(elapsedTime / 1000);
+                    const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+                    const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+                    document.getElementById('timeDisplay').textContent = `${minutes}:${seconds}`;
+                }, 1000);
+            }
+
+            resetTimer() {
+                clearInterval(this.timerInterval);
+                document.getElementById('timeDisplay').textContent = '00:00';
+            }
+
+            handleRodClick(rodIndex) {
+                if (!this.gameActive) return;
+
+                if (this.selectedRod === null) {
+                    if (this.rods[rodIndex].length > 0) {
+                        this.selectedRod = rodIndex;
+                    }
+                } else {
+                    if (this.selectedRod === rodIndex) {
+                        this.selectedRod = null;
+                    } else {
+                        this.moveDisk(this.selectedRod, rodIndex);
+                        this.selectedRod = null;
+                    }
+                }
+                this.render();
+            }
+
+            moveDisk(fromRod, toRod) {
+                const fromDisks = this.rods[fromRod];
+                const toDisks = this.rods[toRod];
+
+                if (fromDisks.length === 0) return;
+
+                const diskToMove = fromDisks[fromDisks.length - 1];
+                const topDiskOnToRod = toDisks[toDisks.length - 1];
+
+                if (topDiskOnToRod !== undefined && diskToMove > topDiskOnToRod) {
+                    document.getElementById('message').textContent = 'Нельзя класть больший диск на меньший!';
+                    document.getElementById('message').className = 'message error';
+                    return;
+                }
+                
+                fromDisks.pop();
+                toDisks.push(diskToMove);
+                
+                this.moves++;
+                document.getElementById('movesCount').textContent = this.moves;
+                document.getElementById('message').textContent = '';
+
+                this.checkWin();
+            }
+
+            checkWin() {
+                if (this.rods[1].length === this.numDisks || this.rods[2].length === this.numDisks) {
+                    this.gameActive = false;
+                    clearInterval(this.timerInterval);
+                    
+                    const timeStr = document.getElementById('timeDisplay').textContent;
+                    document.getElementById('message').textContent = `Поздравляем! Вы прошли игру за ${this.moves} ходов! Время: ${timeStr}`;
+                    document.getElementById('message').className = 'message success';
+
+                    this.saveGameResult(timeStr, this.moves, this.numDisks);
+                }
+            }
+
+            saveGameResult(completionTime, movesCount, difficulty) {
+                const gameResult = {
+                    id: Date.now(),
+                    player_name: 'Игрок',
+                    difficulty: difficulty,
+                    moves_count: movesCount,
+                    completion_time: completionTime,
+                    game_date: new Date().toISOString()
+                };
+
+                let results = this.getStoredResults();
+                results.unshift(gameResult);
+                
+                if (results.length > 20) {
+                    results = results.slice(0, 20);
+                }
+                
+                localStorage.setItem('hanoi_stats', JSON.stringify(results));
+                this.loadStatistics();
+            }
+
+            getStoredResults() {
+                const stored = localStorage.getItem('hanoi_stats');
+                if (stored) {
+                    return JSON.parse(stored);
+                }
+                return [];
+            }
+
+            clearStatistics() {
+                if (confirm('Вы уверены, что хотите очистить всю статистику?')) {
+                    localStorage.removeItem('hanoi_stats');
+                    this.loadStatistics();
+                }
+            }
+
+            loadStatistics() {
+                const games = this.getStoredResults();
+                const container = document.getElementById('statsContainer');
+                
+                if (games.length === 0) {
+                    container.innerHTML = '<p>Результатов пока нет. Сыграйте игру, чтобы появилась статистика!</p>';
+                    return;
+                }
+
+                let html = `
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>Игрок</th>
+                                <th>Дисков</th>
+                                <th>Ходов</th>
+                                <th>Время</th>
+                                <th>Дата</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                games.forEach(game => {
+                    const gameDate = new Date(game.game_date).toLocaleString('ru-RU');
+                    html += `
+                        <tr>
+                            <td>${this.escapeHtml(game.player_name)}</td>
+                            <td>${game.difficulty}</td>
+                            <td>${game.moves_count}</td>
+                            <td>${this.escapeHtml(game.completion_time)}</td>
+                            <td>${gameDate}</td>
+                        </tr>
+                    `;
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            render() {
+                const gameBoard = document.getElementById('gameBoard');
+                gameBoard.innerHTML = '';
+                const rodLabels = ['A', 'B', 'C'];
+                
+                for (let i = 0; i < 3; i++) {
+                    const rod = document.createElement('div');
+                    rod.className = 'rod';
+                    rod.innerHTML = `
+                        <div class="rod-pole"></div>
+                        <div class="rod-base"></div>
+                        <div class="discs-container" id="rod-${i}"></div>
+                        <div class="rod-label">Стержень ${rodLabels[i]}</div>
+                    `;
+                    
+                    rod.addEventListener('click', () => this.handleRodClick(i));
+                    gameBoard.appendChild(rod);
+                    
+                    const container = document.getElementById(`rod-${i}`);
+                    
+                    for (let j = this.rods[i].length - 1; j >= 0; j--) {
+                        const diskSize = this.rods[i][j];
+                        const disk = document.createElement('div');
+                        disk.className = 'disc';
+                        
+                        if (this.selectedRod === i && j === this.rods[i].length - 1) {
+                            disk.classList.add('selected');
+                        }
+                        
+                        const width = 50 + diskSize * 20;
+                        disk.style.width = width + 'px';
+                        container.appendChild(disk);
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new HanoiTowers();
+        });
+    </script>
+</body>
+</html>
